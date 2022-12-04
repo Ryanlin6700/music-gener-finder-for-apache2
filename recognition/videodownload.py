@@ -18,8 +18,8 @@ def download(videourl, file_name):
             targetMP4 = progMP4.order_by('resolution').desc().first()  # 由畫質高排到低選畫質最高的來下載
             # targetMP4 = yt.streams.filter(progressive=True, file_extension='mp4')   # 設定下載方式及格式
             mp4_name = f'{file_name}.mp4'  # 給下載影片名
-            mp4_path = f'./userfile/{file_name}/mp4'
-            makedirs(mp4_path, exist_ok=True)
+            mp4_path = f'var/www/html/flaskapp/userfile/{file_name}/mp4'
+            makedirs(mp4_path, mode=0o777, exist_ok=True)
             targetMP4.download(output_path=mp4_path, filename=mp4_name ) # 下載影片並給輸出路徑    
             validstr = good
         else:

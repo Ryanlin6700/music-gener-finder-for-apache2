@@ -11,14 +11,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn import preprocessing
 # import sys
 
-def find_similar_songs(file_name, genre):
+def find_similar_songs(file_name):
     # 讀資料集 .csv檔，先不設定 index(index_col = False)
     data = pd.read_csv('var/www/html/flaskapp/finalcsv/after_select_ft_final30s.csv',index_col=False)
     data = data.dropna()
-    
-    # 只取模型預測風格歌曲資料集
-    data_S = data['label'] == genre
-    data = data.loc[data_S]
     data = data.drop(columns=['Unnamed: 0','song_name','label'])  # 刪除不要的欄位
     
     # 曲歌單欄位對照 df 最後合併用
@@ -57,14 +53,12 @@ def find_similar_songs(file_name, genre):
     # 以輸入的歌名取欄欄位，此時格式為 series 再排序相關性，並且排除自己對應的係數＝1
     series = sim_df_names["user"].sort_values(ascending = False) # 相關性高到低
     series = series.drop("user") # 排除自己對應的係數=1
-    series = series.iloc[0:10,] # 篩選前10筆
+    series = series.iloc[0:10,] # 篩選前五筆
     tmpdf = pd.DataFrame(series, index=series.index) # series -> dataframe
     # 合併
     similar_list = tmpdf.join(songlist)
     
-    # 印出標題輸入歌曲名稱和前面相識最高的前10首歌名
-    print("\n","*"*31,"\n Similar songs to [","user","]","\n","*"*31,)
-    print(similar_list.iloc[:,1:])
+    # 印出標題輸入歌曲名稱和前面相識最高的前五首歌名
     return similar_list
 
     

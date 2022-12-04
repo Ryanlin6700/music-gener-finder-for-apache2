@@ -14,17 +14,17 @@ def Video_to_wav(file_name):
     
     # 路徑設定 & 確認資料夾，沒有則建立
     # mp4 路徑 & 轉出 wav 音檔路徑
-    mp4_path = f'./userfile/{file_name}/mp4'   # mp4 來源路徑
-    wav_outputpath = f'./userfile/{file_name}/wav'     # 給 wav 輸出目錄的上一層目錄
+    mp4_path = f'var/www/html/flaskapp/userfile/{file_name}/mp4'   # mp4 來源路徑
+    wav_outputpath = f'var/www/html/flaskapp/userfile/{file_name}/wav'     # 給 wav 輸出目錄的上一層目錄
     
     # 如果沒有資料夾建立資料夾
     makedirs(wav_outputpath, exist_ok=True)
     
     # wav 3sor 30s存放路徑
-    wav_outputpath_3s = f'./userfile/{file_name}/3s'
+    wav_outputpath_3s = f'var/www/html/flaskapp/userfile/{file_name}/3s'
     makedirs(wav_outputpath_3s, exist_ok=True)
         
-    wav_outputpath_30s = f'./userfile/{file_name}/30s'
+    wav_outputpath_30s = f'var/www/html/flaskapp/userfile/{file_name}/30s'
     makedirs(wav_outputpath_30s, exist_ok=True)
 
 

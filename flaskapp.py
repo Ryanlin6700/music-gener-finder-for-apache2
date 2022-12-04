@@ -17,11 +17,9 @@ import os
 # 需先在music-main下建立mp4、wav兩個資料夾 
 app = Flask(__name__)
 moment = Moment(app)
-
 UPLOAD_FOLDER = Path(__file__).resolve().parent/'userfile'
 print(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 def return_img_stream(img_local_path):
     """
     工具函數:
@@ -64,14 +62,15 @@ def result():
 
 @app.route('/refresh_result', methods=['POST'])
 def refresh_result():
+    global genre
     response = jsonify({'type':"0", 'result':'0'})
     filename = request.form['filename']
-    folderpath = f'userfile/{filename}'
-    wavpath = f'userfile/{filename}/wav'
-    csvpath = f'userfile/{filename}/csv'
-    csvfile = f'userfile/{filename}/csv/{filename}.csv'
-    pcapath = f'userfile/{filename}/pca_jpg'
-    recommendcsvpath = f'userfile/{filename}/{filename}_orginal.csv'
+    folderpath = f'var/www/html/flaskapp/userfile/{filename}'
+    wavpath = f'var/www/html/flaskapp/userfile/{filename}/wav'
+    csvpath = f'var/www/html/flaskapp/userfile/{filename}/csv'
+    csvfile = f'var/www/html/flaskapp/userfile/{filename}/csv/{filename}.csv'
+    pcapath = f'var/www/html/flaskapp/userfile/{filename}/pca_jpg'
+    recommendcsvpath = f'var/www/html/flaskapp/userfile/{filename}/{filename}_orginal.csv'
     if os.path.isdir(folderpath): # 判斷有沒有影片
         if os.path.isdir(wavpath): # 判斷wav資料夾是否建立
             if os.path.isdir(csvpath): # 判斷csv資料夾是否建立
@@ -81,8 +80,8 @@ def refresh_result():
                             pass
                         else:
                             # analysis - recommendation
-                            result_recommend = recommend.find_similar_songs(filename)
-                            result_recommend.to_csv(f'./userfile/{filename}/{filename}_orginal.csv')
+                            result_recommend = recommend.find_similar_songs(filename, genre)
+                            result_recommend.to_csv(f'var/www/html/flaskapp/userfile/{filename}/{filename}_orginal.csv')
                             type = '3'
                             response = jsonify({'type':type})    
                     else:
@@ -100,6 +99,7 @@ def refresh_result():
             wav.Video_to_wav(filename)
             # model return numpy.string
             result = model.load_DLmodel(filename)
+            genre = result
             type = '1'
             response = jsonify({'type':type, 'result':result})
             
@@ -114,7 +114,7 @@ def refresh_result():
 @app.route('/refresh_recommend', methods=['POST'])
 def refresh_recommend():
     filename = request.form['filename']
-    csvresult = pd.read_csv(f'./userfile/{filename}/{filename}_orginal.csv')
+    csvresult = pd.read_csv(f'var/www/html/flaskapp/userfile/{filename}/{filename}_orginal.csv')
     csvresult = csvresult.reset_index()
     csvresult['index'] = csvresult.index+1
     csvresult = csvresult.drop(['songid','user'],axis=1)

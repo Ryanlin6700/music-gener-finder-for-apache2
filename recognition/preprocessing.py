@@ -25,14 +25,14 @@ def librosa_feature_op(file_name):
     
     # wav 來源路徑
     # wav_outputpath_3s = f'./userfile/{file_name}/3s'
-    wav_outputpath_30s = f'./userfile/{file_name}/30s/'
+    wav_outputpath_30s = f'var/www/html/flaskapp/userfile/{file_name}/30s/'
 
     # csv 存放路徑   
-    csv_outputpath_30s = f'./userfile/{file_name}/csv/'
+    csv_outputpath_30s = f'var/www/html/flaskapp/userfile/{file_name}/csv/'
     makedirs(csv_outputpath_30s, exist_ok=True)
     
     # 自動選特徵，取已挑選的 csv 欄位
-    df = pd.read_csv('./finalcsv/after_select_ft_final30s.csv',index_col=0)
+    df = pd.read_csv('var/www/html/flaskapp/finalcsv/after_select_ft_final30s.csv',index_col=0)
     select_df = df.drop(df.columns[-2:], axis=1)
     select_cols = select_df.columns.values
     

@@ -10,10 +10,10 @@ from os import makedirs
 import sys
 
 def tsne(file_name):
-    pca_jpg_output = f'var/www/html/flaskapp/userfile/{file_name}/pca_jpg'
+    pca_jpg_output = f'./userfile/{file_name}/pca_jpg'
     makedirs(pca_jpg_output, mode=0o777, exist_ok=True) 
 
-    select_df = pd.read_csv('var/www/html/flaskapp/finalcsv/after_select_ft_final30s.csv',index_col=0)
+    select_df = pd.read_csv('./finalcsv/after_select_ft_final30s.csv',index_col=0)
     select_df = select_df.dropna()
     data = select_df.drop(columns=['song_name','videoname','url'],axis=1) # 刪除不要的欄位
 
@@ -21,7 +21,7 @@ def tsne(file_name):
     # userdf_30s2 = pd.read_csv(f'./userfile/{file_name}/csv/{file_name}.csv', index_col=False)
 
     # xen版 
-    userdf_30s2 = pd.read_csv(f'var/www/html/flaskapp/userfile/{file_name}/csv/{file_name}.csv', index_col=False)
+    userdf_30s2 = pd.read_csv(f'./userfile/{file_name}/csv/{file_name}.csv', index_col=False)
 
     userdf_30s2 = userdf_30s2.dropna()
     userdf_30s2 = userdf_30s2.drop(columns=['Unnamed: 0','song_name']) # 刪除不要的欄位
@@ -80,8 +80,10 @@ def tsne(file_name):
     plt.tight_layout()
     plt.axis("off")
     plt.xlabel('TSNE1')
-    plt.savefig(f'var/www/html/flaskapp/static/pca_jpg/{file_name}.png', dpi=100,transparent = False)
+    plt.savefig(f'./static/pca_jpg/{file_name}.png', dpi=100,transparent = False)
 
-    pca_jpg_path = f'./static/pca_jpg/{file_name}.png'
+    pca_jpg_path = f'var/www/html/flaskapp/static/pca_jpg/{file_name}.png'
 
     return pca_jpg_path
+b = sys.argv[1]
+tsne(b)

@@ -13,7 +13,7 @@ from keras.layers import Input
 def load_DLmodel(file_name):
     id = 1  # Song ID
     X_user = np.empty((0, 128, 130))
-    path = f'./userfile/{file_name}/3s/' 
+    path = f'var/www/html/flaskapp/userfile/{file_name}/3s/' 
     file_data = [f for f in listdir(path)]
 
     for line in file_data:
@@ -25,7 +25,7 @@ def load_DLmodel(file_name):
         id = id+1
 
     X_user = X_user.swapaxes(1,2)
-    model = tf.keras.models.load_model('./recognition/crnnmodel.h5')
+    model = tf.keras.models.load_model('var/www/html/flaskapp/recognition/crnnmodel.h5')
     n_features = X_user.shape[2]
     input_shape = (None, n_features)
     model_input = Input(input_shape, name='input')
